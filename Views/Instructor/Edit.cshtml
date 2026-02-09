@@ -1,0 +1,57 @@
+﻿@model AcademicManagementSystem.ViewModel.EditInstructors
+
+<form asp-action="SaveEdit" asp-controller="Instructor" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="form-group">
+        <label asp-for="InstructorName"></label>
+        <input asp-for="InstructorName" class="form-control" />
+        <span asp-validation-for="InstructorName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ImgUrl"></label>
+        <input asp-for="ImgUrl" class="form-control" />
+        <span asp-validation-for="ImgUrl" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Salary"></label>
+        <input asp-for="Salary" class="form-control" />
+        <span asp-validation-for="Salary" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Address"></label>
+        <input asp-for="Address" class="form-control" />
+        <span asp-validation-for="Address" class="text-danger"></span>
+    </div>
+
+    <!-- Department Dropdown -->
+    <div class="form-group">
+        <label asp-for="SelectedDepartmentId"></label>
+        <select asp-for="SelectedDepartmentId" class="form-control"
+                asp-items="@(new SelectList(Model.Department, "Id", "Name", Model.SelectedDepartmentId))">
+          
+                <option value="">-- Select Department --</option>
+        </select>
+        <span asp-validation-for="SelectedDepartmentId" class="text-danger"></span>
+    </div>
+
+    <!-- Course Dropdown -->
+    <div class="form-group">
+        <label asp-for="SelectedCourseId"></label>
+        <select asp-for="SelectedCourseId" class="form-control"
+                asp-items="@(new SelectList(Model.Course, "Id", "Name", Model.SelectedCourseId))">
+            <option value="">-- Select Course --</option>
+        </select>
+        <span asp-validation-for="SelectedCourseId" class="text-danger"></span>
+    </div>
+
+    <br />
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

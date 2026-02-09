@@ -1,0 +1,32 @@
+﻿@model CrsResult
+
+@{
+    ViewData["Title"] = "Course Result Details";
+}
+
+<div class="container my-5">
+    <h2 class="mb-3">Course Result Details</h2>
+
+    <div class="card shadow-sm" style="max-width: 600px; margin:auto;">
+        <div class="card-body">
+            <dl class="row mb-0">
+                <dt class="col-sm-4 text-end">Trainee:</dt>
+                <dd class="col-sm-8">@Model.Trainee?.Name</dd>
+
+                <dt class="col-sm-4 text-end">Course:</dt>
+                <dd class="col-sm-8">@Model.Course?.Name</dd>
+              
+
+                <dt class="col-sm-4 text-end">Department:</dt>
+                <dd class="col-sm-8">@Model.Course?.Department?.Name</dd>
+
+                <dt class="col-sm-4 text-end">Degree:</dt>
+                <dd class="col-sm-8">@Model.Degree</dd>
+            </dl>
+        </div>
+
+        <div class="card-footer text-center">
+            <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+        </div>
+    </div>
+</div>

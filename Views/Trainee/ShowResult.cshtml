@@ -1,0 +1,35 @@
+﻿@model AcademicManagementSystem.ViewModel.TraineeInCourse
+
+@{
+    ViewData["Title"] = "Result Details";
+}
+
+<div class="container mt-5" style="max-width: 600px;">
+   
+
+    <div class="card shadow-lg p-4">
+        <h3 class="text-center mb-4">Student Result</h3>
+
+        <div class="mb-3">
+            <strong>Student Name:</strong>
+            <span class="ms-2" style="color:@Model.Color">@Model.TraineeName</span>
+        </div>
+
+        <div class="mb-3">
+            <strong>Course Name:</strong>
+            <span class="ms-2" style="color:@Model.Color">@Model.CrsName</span>
+        </div>
+
+        <div class="mb-3">
+            <strong>Degree:</strong>
+            <span class="ms-2" style="color:@Model.Color">@Model.Degree</span>
+        </div>
+
+        <div class="mb-4">
+            <strong>Status:</strong>
+            <span class="ms-2 fw-bold" style="color:@Model.Color">@Model.Status</span>
+        </div>
+
+        <a asp-action="Index" class="btn btn-secondary w-100">Back to List</a>
+    </div>
+</div>

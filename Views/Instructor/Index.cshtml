@@ -1,0 +1,85 @@
+﻿@model ICollection<Instructor>
+
+
+<h2 class="my-4 text-center">All Instructors</h2>
+<a asp-controller="Instructor" asp-action="New" class="btn btn-primary">Add New Instructor</a>
+<br />
+
+<div class="table-responsive">
+    <table class="table table-striped table-hover table-bordered align-middle text-center">
+        <thead class="table-dark">
+            <tr>
+                <th style="width: 20%;">Name</th>
+                <th style="width: 15%;">Salary</th>
+                <th style="width: 25%;">Department</th>
+                <th style="width: 25%;">Course</th>
+                <th style="width: 15%;">Details</th>
+                <th style="width: 15%;">Edit</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.Salary</td>
+                    <td>@item.Department?.Name</td>
+                    <td>@item.Course?.Name</td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Details</a>
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Edit</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+@* 
+@model IEnumerable<Instructor>
+
+<div class="container my-5">
+    <h2>Instructors</h2>
+    <div class="row">
+        @foreach (var instructor in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm">
+                    <!-- صورة المدرس -->
+                    <div style="
+                        height: 250px;
+                        background-image: url('@Url.Content($"~/images/{instructor.ImgUrl}")');
+                        background-size: cover;
+                        background-position: top;">
+                        <h5 style="
+                            position: absolute;
+                            bottom: 10px;
+                            left: 10px;
+                            color: white;
+                            background-color: rgba(0,0,0,0.5);
+                            padding: 3px 7px;
+                            border-radius: 3px;">
+                            @instructor.Name
+                        </h5>
+                    </div>
+
+                    <div class="card-body">
+                        <p><strong>Salary:</strong> @instructor.Salary.ToString("C0")</p>
+                        <p><strong>Department:</strong> @instructor.Department?.Name</p>
+                        <p><strong>Course:</strong> @instructor.Course?.Name</p>
+                        <a asp-action="Details" asp-route-id="@instructor.Id" class="btn btn-primary">Details</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+ *@
