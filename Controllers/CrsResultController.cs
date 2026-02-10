@@ -15,6 +15,7 @@ namespace AcademicManagementSystem.Controllers
         {
             _context = context;
         }
+        //I create a Helper Method for diplay the trainee name and course name
         private async Task<(string TraineeName, string CourseName)> GetNamesAsync(int traineeId, int courseId)
         {
             var trainee = await _context.Trainees

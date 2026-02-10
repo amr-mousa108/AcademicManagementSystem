@@ -261,6 +261,53 @@ namespace AcademicManagementSystem.Controllers
             ViewBag.Departments = new SelectList(_context.Departments, "Id", "Name", trainee.DepartmentId);
             return View(trainee);
         }
+
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            var trainee = await _context.Trainees
+                .Include(t => t.CrsResults) 
+                .FirstOrDefaultAsync(t => t.Id == id);
+
+            if (trainee == null)
+                return NotFound();
+
+            // check if trainee has any results
+            if (trainee.CrsResults.Any())
+            {
+                TempData["Error"] = $"Cannot delete trainee {trainee.Name} because they have {trainee.CrsResults.Count} result(s). Please delete the results first.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(trainee);
+        }
+
+        // POST: Trainee/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var trainee = await _context.Trainees
+                .Include(t => t.CrsResults)
+                .FirstOrDefaultAsync(t => t.Id == id);
+
+            if (trainee == null)
+                return NotFound();
+
+            if (trainee.CrsResults.Any())
+            {
+                TempData["Error"] = $"Cannot delete trainee {trainee.Name} because they have {trainee.CrsResults.Count} result(s). Please delete the results first.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            _context.Trainees.Remove(trainee);
+            await _context.SaveChangesAsync();
+
+            TempData["Success"] = $"Trainee {trainee.Name} deleted successfully!";
+            return RedirectToAction(nameof(Index));
+        }
+
+
     }
 
 }
