@@ -1,0 +1,80 @@
+﻿@model CrsResult
+
+@{
+    ViewData["Title"] = "Create Result";
+    ViewData["Icon"] = "plus-circle";
+    ViewData["Subtitle"] = "Add a new course result";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-header bg-success text-white">
+                <h4 class="mb-0"><i class="bi bi-plus-circle"></i> Create New Result</h4>
+            </div>
+            <div class="card-body">
+                <form asp-action="Create" method="post">
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="Trainee_Id" class="form-label">
+                            <i class="bi bi-person"></i> Trainee
+                        </label>
+                        <select asp-for="Trainee_Id" class="form-select" asp-items="ViewBag.Trainees">
+                            <option value="">-- Select Trainee --</option>
+                        </select>
+                        <span asp-validation-for="Trainee_Id" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Crs_Id" class="form-label">
+                            <i class="bi bi-book"></i> Course
+                        </label>
+                        <select asp-for="Crs_Id" class="form-select" asp-items="ViewBag.Courses" id="courseSelect">
+                            <option value="">-- Select Course --</option>
+                        </select>
+                        <span asp-validation-for="Crs_Id" class="text-danger"></span>
+                        <small class="form-text text-muted" id="courseInfo"></small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Degree" class="form-label">
+                            <i class="bi bi-award"></i> Degree
+                        </label>
+                        <input asp-for="Degree" class="form-control" type="number" min="0" placeholder="Enter degree" />
+                        <span asp-validation-for="Degree" class="text-danger"></span>
+                    </div>
+
+                    <div class="d-flex justify-content-between mt-4">
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left"></i> Cancel
+                        </a>
+                        <button type="submit" class="btn btn-success">
+                            <i class="bi bi-save"></i> Create
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        // عرض معلومات الكورس عند الاختيار
+        $('#courseSelect').change(function () {
+            var courseId = $(this).val();
+            if (courseId) {
+                $.get('@Url.Action("GetCourseDetails", "CrsResult")?courseId=' + courseId, function (data) {
+                    $('#courseInfo').html('Max Degree: ' + data.maxDegree + ' | Min to Pass: ' + data.minDegree);
+                    $('input[name="Degree"]').attr('max', data.maxDegree);
+                });
+            } else {
+                $('#courseInfo').html('');
+            }
+        });
+    </script>
+}

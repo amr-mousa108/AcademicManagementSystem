@@ -40,9 +40,9 @@ namespace AcademicManagementSystem.Data
 
             // Trainee Seed
             modelBuilder.Entity<Trainee>().HasData(
-                new Trainee { Id = 1, Name = "Mostafa Adel", Address = "Cairo", ImgUrl = "mostafa.jpg", Grade = 85, DepartmentId = 1 },
-                new Trainee { Id = 2, Name = "Sara Ahmed", Address = "Alex", ImgUrl = "sara.jpg", Grade = 92, DepartmentId = 1 },
-                new Trainee { Id = 3, Name = "Nour Ali", Address = "Tanta", ImgUrl = "nour.jpg", Grade = 75, DepartmentId = 2 }
+                new Trainee { Id = 1, Name = "Mostafa Adel", Address = "Cairo", ImgUrl = "mostafa.jpg", AcademicLevel = 1, DepartmentId = 1 },
+                new Trainee { Id = 2, Name = "Sara Ahmed", Address = "Alex", ImgUrl = "sara.jpg", AcademicLevel =2, DepartmentId = 1 },
+                new Trainee { Id = 3, Name = "Nour Ali", Address = "Tanta", ImgUrl = "nour.jpg", AcademicLevel = 2, DepartmentId = 2 }
             );
 
             // crsResult Seed

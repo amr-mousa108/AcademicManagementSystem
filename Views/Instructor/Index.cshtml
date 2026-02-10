@@ -1,5 +1,7 @@
 ﻿@model ICollection<Instructor>
-
+@{
+    ViewData["Title"] = "Instructors List";
+}
 
 <h2 class="my-4 text-center">All Instructors</h2>
 <a asp-controller="Instructor" asp-action="New" class="btn btn-primary">Add New Instructor</a>

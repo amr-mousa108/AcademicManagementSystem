@@ -247,7 +247,7 @@ namespace AcademicManagementSystem.Data
                     b.Property<int?>("DepartmentId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Grade")
+                    b.Property<int>("AcademicLevel")
                         .HasColumnType("int");
 
                     b.Property<string>("ImgUrl")
@@ -270,7 +270,7 @@ namespace AcademicManagementSystem.Data
                             Id = 1,
                             Address = "Cairo",
                             DepartmentId = 1,
-                            Grade = 85,
+                            AcademicLevel = 85,
                             ImgUrl = "mostafa.jpg",
                             Name = "Mostafa Adel"
                         },
@@ -279,7 +279,7 @@ namespace AcademicManagementSystem.Data
                             Id = 2,
                             Address = "Alex",
                             DepartmentId = 1,
-                            Grade = 92,
+                            AcademicLevel = 92,
                             ImgUrl = "sara.jpg",
                             Name = "Sara Ahmed"
                         },
@@ -288,7 +288,7 @@ namespace AcademicManagementSystem.Data
                             Id = 3,
                             Address = "Tanta",
                             DepartmentId = 2,
-                            Grade = 75,
+                            AcademicLevel = 75,
                             ImgUrl = "nour.jpg",
                             Name = "Nour Ali"
                         });

@@ -1,35 +1,103 @@
-﻿@model AcademicManagementSystem.ViewModel.TraineeInCourse
+﻿@model List<AcademicManagementSystem.ViewModel.TraineeInCourse>
 
 @{
-    ViewData["Title"] = "Result Details";
+    ViewData["Title"] = $"Results - {Model.First().TraineeName}";
+    ViewData["Icon"] = "bar-chart-fill";
+    ViewData["Subtitle"] = "View trainee course results";
 }
 
-<div class="container mt-5" style="max-width: 600px;">
-   
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Results for @Model.First().TraineeName</h2>
+        <a asp-action="Index" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Back to List
+        </a>
+    </div>
 
-    <div class="card shadow-lg p-4">
-        <h3 class="text-center mb-4">Student Result</h3>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Course Name</th>
+                    <th>Degree</th>
+                    <th>Min Degree</th>
+                    <th>Max Degree</th>
+                    <th>Percentage</th>
+                    <th>Status</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var result in Model)
+                {
+                    <tr style="background-color: @(result.Color == "green" ? "#d4edda" : "#f8d7da");">
+                        <td>
+                            <strong>@result.CrsName</strong>
+                        </td>
+                        <td>
+                            <span class="badge bg-primary">@result.Degree</span>
+                        </td>
+                        <td>@result.MinDegree</td>
+                        <td>@result.MaxDegree</td>
+                        <td>
+                            <div class="progress" style="height: 25px;">
+                                <div class="progress-bar @(result.Color == "green" ? "bg-success" : "bg-danger")"
+                                     role="progressbar"
+                                     style="width: @result.Percentage%;"
+                                     aria-valuenow="@result.Percentage"
+                                     aria-valuemin="0"
+                                     aria-valuemax="100">
+                                    @result.Percentage%
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="badge @(result.Color == "green" ? "bg-success" : "bg-danger")">
+                                @result.Status
+                            </span>
+                        </td>
+                        <td>
+                            <a asp-controller="CrsResult"
+                               asp-action="Details"
+                               asp-route-id="@result.CrsResultId"
+                               class="btn btn-sm btn-info">
+                                Details <i class="bi bi-info-circle"></i>
+                            </a>
+                        </td>
 
-        <div class="mb-3">
-            <strong>Student Name:</strong>
-            <span class="ms-2" style="color:@Model.Color">@Model.TraineeName</span>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+@*     إحصائيات سريعة
+ *@  
+ <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="card bg-info text-white">
+                <div class="card-body text-center">
+                    <h5>Total Courses</h5>
+                    <h2>@Model.Count</h2>
+                </div>
+            </div>
         </div>
-
-        <div class="mb-3">
-            <strong>Course Name:</strong>
-            <span class="ms-2" style="color:@Model.Color">@Model.CrsName</span>
+        <div class="col-md-4">
+            <div class="card bg-success text-white">
+                <div class="card-body text-center">
+                    <h5>Passed</h5>
+                    <h2>@Model.Count(r => r.Status == "Passed")</h2>
+                </div>
+            </div>
         </div>
-
-        <div class="mb-3">
-            <strong>Degree:</strong>
-            <span class="ms-2" style="color:@Model.Color">@Model.Degree</span>
+        <div class="col-md-4">
+            <div class="card bg-danger text-white">
+                <div class="card-body text-center">
+                    <h5>Failed</h5>
+                    <h2>@Model.Count(r => r.Status == "Failed")</h2>
+                </div>
+            </div>
         </div>
-
-        <div class="mb-4">
-            <strong>Status:</strong>
-            <span class="ms-2 fw-bold" style="color:@Model.Color">@Model.Status</span>
-        </div>
-
-        <a asp-action="Index" class="btn btn-secondary w-100">Back to List</a>
     </div>
 </div>

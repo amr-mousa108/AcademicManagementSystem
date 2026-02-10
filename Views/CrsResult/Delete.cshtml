@@ -1,0 +1,45 @@
+﻿@model CrsResult
+
+@{
+    ViewData["Title"] = "Delete Result";
+    ViewData["Icon"] = "trash";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow border-danger">
+            <div class="card-header bg-danger text-white">
+                <h4 class="mb-0"><i class="bi bi-exclamation-triangle"></i> Confirm Delete</h4>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-warning">
+                    <i class="bi bi-exclamation-triangle-fill"></i>
+                    Are you sure you want to delete this result?
+                </div>
+
+                <dl class="row">
+                    <dt class="col-sm-4">Trainee:</dt>
+                    <dd class="col-sm-8">@Model.Trainee?.Name</dd>
+
+                    <dt class="col-sm-4">Course:</dt>
+                    <dd class="col-sm-8">@Model.Course?.Name</dd>
+
+                    <dt class="col-sm-4">Degree:</dt>
+                    <dd class="col-sm-8">@Model.Degree / @Model.Course?.Degree</dd>
+                </dl>
+
+                <form asp-action="Delete" method="post">
+                    <input type="hidden" asp-for="Id" />
+                    <div class="d-flex justify-content-between mt-4">
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left"></i> Cancel
+                        </a>
+                        <button type="submit" class="btn btn-danger">
+                            <i class="bi bi-trash"></i> Delete
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

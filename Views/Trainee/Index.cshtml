@@ -1,31 +1,75 @@
-﻿@model List<Trainee>
+﻿@model List<AcademicManagementSystem.Models.Trainee>
 
 @{
-    ViewData["Title"] = "Trainees List";
+    ViewData["Title"] = "Trainees";
+    ViewData["Icon"] = "people-fill";
 }
 
 <div class="container mt-4">
-    <h2 class="mb-4">Trainees</h2>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <a asp-action="Create" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> Add New Trainee
+        </a>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show">
+            @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
 
     <div class="row">
         @foreach (var trainee in Model)
         {
+            var imageUrl = !string.IsNullOrEmpty(trainee.ImgUrl) ? trainee.ImgUrl : "default.jpg";
+            var imagePath = $"/images/trainees/{imageUrl}";
+
             <div class="col-md-4 mb-4">
-                <div class="card shadow-sm">
-                    <img src="~/Images/@trainee.ImgUrl" class="card-img-top" style="height:200px; object-fit:cover;" alt="@trainee.Name">
+                <div class="card h-100 shadow-sm">
+                    @* إضافة timestamp لمنع الـ cache *@
+                    <img src="@imagePath"
+                         class="card-img-top"
+                         alt="@trainee.Name"
+                         style="height: 250px;
+                                width: 100%;
+                                object-fit: contain;
+                                object-position: center;
+                                background-color: #f8f9fa;"
+                         onerror="this.onerror=null; this.src='/images/trainees/default.jpg';">
+
                     <div class="card-body">
                         <h5 class="card-title">@trainee.Name</h5>
-                        <p class="card-text mb-2">
-                            <strong>Department:</strong> @trainee.Department?.Name <br />
-                            <strong>Address:</strong> @trainee.Address
+                        <p class="card-text">
+                            <strong><i class="bi bi-building"></i> Department:</strong> @(trainee.Department?.Name ?? "N/A")<br>
+                            <strong><i class="bi bi-star"></i> AcademicLevel:</strong> @trainee.AcademicLevel<br>
+                            <strong><i class="bi bi-geo-alt"></i> Address:</strong> @trainee.Address<br>
+                            <strong><i class="bi bi-book"></i> Courses:</strong> @trainee.CrsResults.Count
                         </p>
-
-                        <a asp-action="ShowResult" asp-route-id="@trainee.Id"
-                           class="btn btn-primary mt-3 w-100">Show Results</a>
+                    </div>
+                    <div class="card-footer bg-transparent">
+                        <div class="btn-group w-100" role="group">
+                            <a asp-action="ShowResult" asp-route-id="@trainee.Id"
+                               class="btn btn-sm btn-primary" title="Show Results">Show Result
+                                <i class="bi bi-bar-chart"></i>
+                            </a>
+@*                             <a asp-action="Details" asp-controller="CrsResult" asp-route-id="@trainee.Id"
+                               class="btn btn-sm btn-info" title="Details">Details
+                                <i class="bi bi-info-circle"></i>
+                            </a> *@
+                            <a asp-action="Edit" asp-route-id="@trainee.Id"
+                               class="btn btn-sm btn-warning" title="Edit">Edit
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@trainee.Id"
+                               class="btn btn-sm btn-danger" title="Delete">Delete
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
         }
     </div>
 </div>
-

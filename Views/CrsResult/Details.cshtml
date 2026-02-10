@@ -1,32 +1,146 @@
 ﻿@model CrsResult
 
 @{
-    ViewData["Title"] = "Course Result Details";
+    ViewData["Title"] = "Result Details";
+    ViewData["Icon"] = "file-earmark-text";
+    ViewData["Subtitle"] = "View complete result information";
 }
 
-<div class="container my-5">
-    <h2 class="mb-3">Course Result Details</h2>
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        @{
+            var isPassed = Model.Degree >= Model.Course?.MinDegree;
+            var percentage = Model.Course?.Degree > 0 ? Math.Round((double)Model.Degree / Model.Course.Degree * 100, 1) : 0;
+        }
 
-    <div class="card shadow-sm" style="max-width: 600px; margin:auto;">
-        <div class="card-body">
-            <dl class="row mb-0">
-                <dt class="col-sm-4 text-end">Trainee:</dt>
-                <dd class="col-sm-8">@Model.Trainee?.Name</dd>
-
-                <dt class="col-sm-4 text-end">Course:</dt>
-                <dd class="col-sm-8">@Model.Course?.Name</dd>
-              
-
-                <dt class="col-sm-4 text-end">Department:</dt>
-                <dd class="col-sm-8">@Model.Course?.Department?.Name</dd>
-
-                <dt class="col-sm-4 text-end">Degree:</dt>
-                <dd class="col-sm-8">@Model.Degree</dd>
-            </dl>
+        <!-- Status Banner -->
+        <div class="alert @(isPassed ? "alert-success" : "alert-danger") text-center mb-4">
+            <h4>
+                @if (isPassed)
+                {
+                    <i class="bi bi-check-circle-fill"></i> <strong>PASSED</strong>
+                }
+                else
+                {
+                    <i class="bi bi-x-circle-fill"></i> <strong>FAILED</strong>
+                }
+            </h4>
+            <p class="mb-0">Score: <strong>@percentage%</strong></p>
         </div>
 
-        <div class="card-footer text-center">
-            <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+        <!-- Trainee Info -->
+        <div class="card shadow-sm mb-3">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="bi bi-person-badge"></i> Trainee Information</h5>
+            </div>
+            <div class="card-body">
+                <dl class="row mb-0">
+                    <dt class="col-sm-4">Name:</dt>
+                    <dd class="col-sm-8">@Model.Trainee?.Name</dd>
+
+                    <dt class="col-sm-4">Department:</dt>
+                    <dd class="col-sm-8">@Model.Trainee?.Department?.Name</dd>
+
+                    <dt class="col-sm-4">AcademicLevel:</dt>
+                    <dd class="col-sm-8">@Model.Trainee?.AcademicLevel</dd>
+                </dl>
+            </div>
+        </div>
+
+        <!-- Course Info -->
+        <div class="card shadow-sm mb-3">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0"><i class="bi bi-book"></i> Course Information</h5>
+            </div>
+            <div class="card-body">
+                <dl class="row mb-0">
+                    <dt class="col-sm-4">Course Name:</dt>
+                    <dd class="col-sm-8">@Model.Course?.Name</dd>
+
+                    <dt class="col-sm-4">Department:</dt>
+                    <dd class="col-sm-8">@Model.Course?.Department?.Name</dd>
+
+                    <dt class="col-sm-4">Instructors:</dt>
+                    <dd class="col-sm-8">
+                        @if (Model.Course?.Instructors?.Any() == true)
+                        {
+                            @string.Join(", ", Model.Course.Instructors.Select(i => i.Name))
+                        }
+                        else
+                        {
+                            <span class="text-muted">No instructors assigned</span>
+                        }
+                    </dd>
+
+                </dl>
+            </div>
+        </div>
+
+        <!-- Result Info -->
+        <div class="card shadow-sm mb-3">
+            <div class="card-header @(isPassed ? "bg-success" : "bg-danger") text-white">
+                <h5 class="mb-0"><i class="bi bi-clipboard-check"></i> Result Details</h5>
+            </div>
+            <div class="card-body">
+                <dl class="row mb-3">
+                    <dt class="col-sm-4">Student Score:</dt>
+                    <dd class="col-sm-8">
+                        <h4 class="mb-0">
+                            <span class="badge @(isPassed ? "bg-success" : "bg-danger")">
+                                @Model.Degree / @Model.Course?.Degree
+                            </span>
+                        </h4>
+                    </dd>
+
+                    <dt class="col-sm-4">Percentage:</dt>
+                    <dd class="col-sm-8">
+                        <div class="progress" style="height: 30px;">
+                            <div class="progress-bar @(isPassed ? "bg-success" : "bg-danger")"
+                                 role="progressbar"
+                                 style="width: @percentage%;"
+                                 aria-valuenow="@percentage"
+                                 aria-valuemin="0"
+                                 aria-valuemax="100">
+                                <strong>@percentage%</strong>
+                            </div>
+                        </div>
+                    </dd>
+
+                    <dt class="col-sm-4">Minimum to Pass:</dt>
+                    <dd class="col-sm-8">@Model.Course?.MinDegree</dd>
+
+                    <dt class="col-sm-4">Status:</dt>
+                    <dd class="col-sm-8">
+                        @if (isPassed)
+                        {
+                            <span class="badge bg-success">
+                                <i class="bi bi-check-circle"></i> PASSED
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">
+                                <i class="bi bi-x-circle"></i> FAILED
+                            </span>
+                        }
+                    </dd>
+                </dl>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="d-flex justify-content-between">
+            <a asp-action="Index" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Back to List
+            </a>
+            <div>
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
+                    <i class="bi bi-pencil"></i> Edit
+                </a>
+                <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">
+                    <i class="bi bi-trash"></i> Delete
+                </a>
+            </div>
         </div>
     </div>
 </div>

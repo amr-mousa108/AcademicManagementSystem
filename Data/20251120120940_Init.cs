@@ -57,7 +57,7 @@ namespace AcademicManagementSystem.Data
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ImgUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Grade = table.Column<int>(type: "int", nullable: false),
+                    AcademicLevel = table.Column<int>(type: "int", nullable: false),
                     DepartmentId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -148,7 +148,7 @@ namespace AcademicManagementSystem.Data
 
             migrationBuilder.InsertData(
                 table: "Trainees",
-                columns: new[] { "Id", "Address", "DepartmentId", "Grade", "ImgUrl", "Name" },
+                columns: new[] { "Id", "Address", "DepartmentId", "AcademicLevel", "ImgUrl", "Name" },
                 values: new object[,]
                 {
                     { 1, "Cairo", 1, 85, "mostafa.jpg", "Mostafa Adel" },
