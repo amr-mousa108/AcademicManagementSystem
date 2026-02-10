@@ -3,6 +3,7 @@ using AcademicManagementSystem.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using static Azure.Core.HttpHeader;
 
 namespace AcademicManagementSystem.Controllers
 {
@@ -14,6 +15,21 @@ namespace AcademicManagementSystem.Controllers
         {
             _context = context;
         }
+        private async Task<(string TraineeName, string CourseName)> GetNamesAsync(int traineeId, int courseId)
+        {
+            var trainee = await _context.Trainees
+                .Where(t => t.Id == traineeId)
+                .Select(t => t.Name)
+                .FirstOrDefaultAsync();
+
+            var course = await _context.Courses
+                .Where(c => c.Id == courseId)
+                .Select(c => c.Name)
+                .FirstOrDefaultAsync();
+
+            return (trainee ?? "Unknown Trainee", course ?? "Unknown Course");
+        }
+
 
         // GET: CrsResult
         public IActionResult Index()
@@ -90,8 +106,11 @@ namespace AcademicManagementSystem.Controllers
 
                 _context.crsResults.Add(crsResult);
                 await _context.SaveChangesAsync();
+                var names = await GetNamesAsync(crsResult.Trainee_Id, crsResult.Crs_Id);
 
-                TempData["Success"] = "Course result created successfully!";
+                TempData["Success"] =
+                    $"Result for trainee '{names.TraineeName}' in course '{names.CourseName}' was created successfully.";
+
                 return RedirectToAction(nameof(Index));
             }
 
@@ -144,8 +163,13 @@ namespace AcademicManagementSystem.Controllers
                     _context.Update(crsResult);
                     await _context.SaveChangesAsync();
 
-                    TempData["Success"] = "Course result updated successfully!";
+                    var names = await GetNamesAsync(crsResult.Trainee_Id, crsResult.Crs_Id);
+
+                    TempData["Success"] =
+                        $"Result for trainee '{names.TraineeName}' in course '{names.CourseName}' was updated successfully.";
+
                     return RedirectToAction(nameof(Index));
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -186,9 +210,12 @@ namespace AcademicManagementSystem.Controllers
             var crsResult = await _context.crsResults.FindAsync(id);
             if (crsResult != null)
             {
+                var names = await GetNamesAsync(crsResult.Trainee_Id, crsResult.Crs_Id);
+
                 _context.crsResults.Remove(crsResult);
                 await _context.SaveChangesAsync();
-                TempData["Success"] = "Course result deleted successfully!";
+                TempData["Success"] =
+                $"Result for trainee '{names.TraineeName}' in course '{names.CourseName}' was deleted successfully.";
             }
 
             return RedirectToAction(nameof(Index));
