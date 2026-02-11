@@ -1,0 +1,44 @@
+﻿@model IEnumerable<AcademicManagementSystem.Models.Course>
+
+@{
+    ViewData["Title"] = "Courses";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between mb-3">
+        <h2>Courses</h2>
+        <a asp-action="Create" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> Add New Course
+        </a>
+    </div>
+
+    <table class="table table-bordered table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Max Degree</th>
+                <th>Min Degree</th>
+                <th>Department</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var course in Model)
+            {
+                <tr>
+                    <td>@course.Id</td>
+                    <td>@course.Name</td>
+                    <td>@course.Degree</td>
+                    <td>@course.MinDegree</td>
+                    <td>@course.Department?.Name</td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@course.Id" class="btn btn-info btn-sm">Details</a>
+                        <a asp-action="Edit" asp-route-id="@course.Id" class="btn btn-primary btn-sm">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@course.Id" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

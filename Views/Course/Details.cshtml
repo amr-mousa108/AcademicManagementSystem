@@ -1,0 +1,59 @@
+﻿@model AcademicManagementSystem.Models.Course
+
+@{
+    ViewData["Title"] = "Course Details";
+}
+
+<div class="container mt-4">
+    <h2>Course Details - @Model.Name</h2>
+
+    <dl class="row">
+        <dt class="col-sm-3">Name</dt>
+        <dd class="col-sm-9">@Model.Name</dd>
+
+        <dt class="col-sm-3">Max Degree</dt>
+        <dd class="col-sm-9">@Model.Degree</dd>
+
+        <dt class="col-sm-3">Min Degree</dt>
+        <dd class="col-sm-9">@Model.MinDegree</dd>
+
+        <dt class="col-sm-3">Department</dt>
+        <dd class="col-sm-9">@Model.Department?.Name</dd>
+
+        <dt class="col-sm-3">Instructors</dt>
+        <dd class="col-sm-9">
+            @if (Model.Instructors.Any())
+            {
+                <ul>
+                    @foreach (var inst in Model.Instructors)
+                    {
+                        <li>@inst.Name</li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p>No instructors assigned</p>
+            }
+        </dd>
+
+        <dt class="col-sm-3">Course Results</dt>
+        <dd class="col-sm-9">
+            @if (Model.crsResults.Any())
+            {
+                <ul>
+                    @foreach (var r in Model.crsResults)
+                    {
+                        <li>@r.Trainee?.Name - @r.Degree</li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p>No results yet</p>
+            }
+        </dd>
+    </dl>
+
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</div>
