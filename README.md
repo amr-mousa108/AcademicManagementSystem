@@ -38,6 +38,7 @@ The project follows a **layered architecture** pattern for better separation of 
 - ✅ **Results Tracking**: Monitor and record course results for each trainee
 - ✅ **Responsive Design**: Bootstrap-powered UI that works on all devices
 - ✅ **Clean Architecture**: Layered design for easy maintenance and future expansion
+- ✅ **Asynchronous Database Operations**: Some of database actions use `async/await` for better performance and responsiveness
 
 ## 🛠️ Technologies Used
 
